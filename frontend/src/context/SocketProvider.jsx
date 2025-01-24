@@ -10,7 +10,7 @@ export const useSocket = () => {
 
 function SocketProvider(props) {
 
-    const socket = useMemo(()=>io("localhost:8000"),[])
+    const socket = useMemo(() => io("https://facetime-4cmz.onrender.com"), []);
     
   return (
     <>
