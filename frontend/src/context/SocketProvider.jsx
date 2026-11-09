@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import {io} from "socket.io-client"
 
 const SocketContext = React.createContext()
@@ -10,7 +10,7 @@ export const useSocket = () => {
 
 function SocketProvider(props) {
 
-    const socket = useMemo(() => io("https://facetime-4cmz.onrender.com"), []);
+    const socket = useMemo(() => io("http://localhost:8000"), []);
     
   return (
     <>

@@ -1,7 +1,7 @@
 import './App.css'
 import Home from './pages/Home';
-import Lobby from './pages/Lobby'
 import Room from "./pages/Room";
+import Lobby from "./pages/Lobby";
 import {Routes, Route} from "react-router-dom"
 
 function App() {

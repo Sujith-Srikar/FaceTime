@@ -93,25 +93,26 @@ function Room() {
   }, []); 
 
   const handleRoomUsers = useCallback((users) => {
+    console.log(users)
     const otherUsers = users.filter((user) => user.id !== socket.id);
     setUsers(otherUsers);
-  },[users])
+  },[socket.id])
 
   useEffect(() => {
     socket.on("user:joined", handleUserJoin);
+    socket.on("room:users", handleRoomUsers);
     socket.on("incoming:call", handleIncomingCall);
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoIncoming);
     socket.on("peer:nego:final", handleNegoNeedFinal);
-    socket.on("room:users", handleRoomUsers);
-
+    
     return () => {
       socket.off("user:joined", handleUserJoin);
+      socket.off("room:users", handleRoomUsers);
       socket.off("incoming:call", handleIncomingCall);
       socket.off("call:accepted", handleCallAccepted);
       socket.off("peer:nego:needed", handleNegoIncoming);
       socket.off("peer:nego:final", handleNegoNeedFinal);
-      socket.off("room:users", handleRoomUsers);
     };
   }, [
     socket,
@@ -135,6 +136,33 @@ function Room() {
           <h3 className="text-xl mt-2 text-gray-300">
             {remoteSocketid ? `Connected` : "Waiting for someone to join..."}
           </h3>
+        </div>
+
+        {/* Users List */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+            Users in Room
+          </h2>
+          {users.length > 0 ? (
+            <ul className="space-y-2">
+              {users.map((user) => (
+                <li
+                  key={user.id}
+                  className="flex items-center justify-between p-4 bg-gray-800 rounded-lg shadow-md"
+                >
+                  <span>{user.name || user.id}</span>
+                  <button
+                    onClick={() => handleCallUser(user.id)}
+                    className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full text-sm transition-all duration-300"
+                  >
+                    Call
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-400">No other users in the room yet.</p>
+          )}
         </div>
 
         {/* Video Streams Container */}

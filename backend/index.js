@@ -28,11 +28,12 @@ io.on("connection", (socket) => {
       id: socket.id,
       name: name
     });
+    socket.join(room);
     
     // Emit to all users in room including new user
     io.to(room).emit("room:users", roomUsers.get(room));
+    console.log(roomUsers.get(room));
     io.to(room).emit("user:joined", { name, id: socket.id });
-    socket.join(room);
     io.to(room).emit("join_room", data);
   });
 
